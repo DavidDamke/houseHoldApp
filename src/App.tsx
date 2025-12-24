@@ -1,34 +1,44 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, type ReactElement } from 'react'
+import { ShoppingList } from './components/ShoppingList'
+
+
+enum NavigationType {
+  SHOPPINGLIST
+}
+
+
+type NavigaionButtonProps = {
+  name: string, 
+  navigationKey?: NavigationType
+}
 
 function App() {
-  const [count, setCount] = useState(0)
+  
+  const [mainContent, setMainContent] = useState<ReactElement | null>(null)
+  
+
+  const NavigaionButton = ({name, navigationKey}: NavigaionButtonProps):ReactElement => {
+  
+    const content = navigationKey == NavigationType.SHOPPINGLIST ? <ShoppingList/> : null
+    
+    return <div style={{cursor:"pointer"}} onClick={()=>setMainContent(content)}>
+      {name}
+    </div>
+  }
+
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div style={{ display: 'flex', flexDirection: "row", height: "100%" }}>
+      
+      <div style={{ backgroundColor: "grey", padding: "8px" , gap:"8px"}}> <h3>HouseHoldApp</h3>
+        
+        <div style={{display:"flex", flexDirection:"column"}}>
+       <NavigaionButton name={"ShoppingList"} navigationKey={NavigationType.SHOPPINGLIST}></NavigaionButton>
+       <NavigaionButton name={"Empty"}></NavigaionButton>
+      </div></div>
+      
+        {mainContent}
+    </div>
   )
 }
 
